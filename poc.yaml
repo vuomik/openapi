@@ -1,0 +1,158 @@
+openapi: 3.0.0
+info:
+  title: 'OpenAPI Person'
+  description: 'This is my sample app'
+  version: 1.0.0
+paths:
+  /person:
+    post:
+      tags:
+        - person
+      operationId: createPerson
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Person'
+      responses:
+        '203':
+          description: 'Accepted new person for processing'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+  '/person/{personId}':
+    get:
+      tags:
+        - person
+      operationId: showPerson
+      parameters:
+        -
+          name: personId
+          in: path
+          description: 'Personal identification token of a person in our system'
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: '1'
+      responses:
+        '200':
+          description: "A person's profile"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
+    put:
+      tags:
+        - person
+      operationId: updatePerson
+      parameters:
+        -
+          name: personId
+          in: path
+          description: 'Personal identification token of a person in our system'
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: '1'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Person'
+      responses:
+        '200':
+          description: "A person's profile"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
+components:
+  schemas:
+    Address:
+      title: Address
+      description: 'A properly-typed address'
+      required:
+        - street
+        - city
+        - state
+        - zip
+      properties:
+        street:
+          title: street
+          description: 'Building/House number and street'
+          type: string
+          format: string
+          example: '10 Exchange Place'
+        city:
+          title: city
+          description: 'City or locality'
+          type: string
+          format: string
+          example: 'Jersey City'
+        state:
+          title: street
+          description: 'US State'
+          type: string
+          format: us-state
+          example: NJ
+        zip:
+          title: street
+          description: 'US 5-digit zip code'
+          type: string
+          format: us-zip
+          example: '07302'
+      type: object
+    GivenName:
+      title: 'Given Name'
+      description: "This is a person's given name"
+      required:
+        - first
+        - last
+      properties:
+        first:
+          title: first
+          description: 'First Name'
+          type: string
+          format: string
+          example: John
+        last:
+          title: last
+          description: 'Last Name'
+          type: string
+          format: string
+          example: Doe
+      type: object
+    Person:
+      title: Person
+      description: "A person's profile in our system"
+      required:
+        - name
+        - address
+        - email
+      properties:
+        name:
+          $ref: '#/components/schemas/GivenName'
+        address:
+          $ref: '#/components/schemas/Address'
+        email:
+          title: email
+          description: 'Email Address'
+          type: string
+          format: email
+          example: john.doe@example.com
+      type: object
+    Response:
+      title: Response
+      description: 'Response Message'
+      required:
+        - message
+      properties:
+        message:
+          title: message
+          description: 'Response Message'
+          type: string
+          example: "Qapla'"
+      type: object
